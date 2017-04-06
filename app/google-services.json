@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "449689036415",
+    "firebase_url": "https://pdamandrioidproject.firebaseio.com",
+    "project_id": "pdamandrioidproject",
+    "storage_bucket": "pdamandrioidproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:449689036415:android:d085368ec47d6568",
+        "android_client_info": {
+          "package_name": "com.example.estudiante.vistaspdam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "449689036415-ni1sgdpgv1qkm7o642ilkaf0uue3rnf2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPHOTqBtWqF9tUqSJicM0_CrDaYSflMCo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
