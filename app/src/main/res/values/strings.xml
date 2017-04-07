@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name"></string>
     <string name="title_activity_maps">Map</string>
-    <string name="find_address">Find Address</string>
+    <string name="find_address">Find Route</string>
     <string name="address">Address</string>
     <string name="no_location_data_provided">No location data provided</string>
     <string name="no_address_found">no address found</string>

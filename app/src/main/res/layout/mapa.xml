@@ -13,7 +13,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.54"
+        android:layout_weight="0.22"
         tools:layout="@layout/abc_action_bar_title_item" />
 
     <LinearLayout
@@ -22,21 +22,22 @@
         android:orientation="vertical">
 
         <TextView
-        android:id="@+id/address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/address"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:visibility="gone"
-        tools:visibility="visible" />
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/address"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onFindAddressClicked"
+            android:onClick="setRoute"
             android:text="@string/find_address" />
+
     </LinearLayout>
 </LinearLayout>

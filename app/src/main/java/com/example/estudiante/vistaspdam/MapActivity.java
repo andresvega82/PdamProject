@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.example.estudiante.vistaspdam.mapas.AddressResultListener;
 import com.example.estudiante.vistaspdam.mapas.AddressResultReceiver;
 import com.example.estudiante.vistaspdam.mapas.FetchAddressIntentService;
+import com.example.estudiante.vistaspdam.mapas.GMapV2Direction;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -28,12 +30,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import org.w3c.dom.Document;
+
+import java.util.ArrayList;
 
 
 public class MapActivity
         extends FragmentActivity
-        implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener
+        implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,GoogleMap.OnMarkerClickListener
 {
 
     private static final int ACCESS_LOCATION_PERMISSION_CODE = 10;
@@ -45,6 +54,10 @@ public class MapActivity
     private GoogleApiClient googleApiClient;
 
     private TextView address;
+
+    private LatLng sourcePosition = null;
+    private LatLng destPosition = null;
+    private boolean ok = false;
 
     public static boolean hasPermissions( Context context, String[] permissions )
     {
@@ -69,7 +82,6 @@ public class MapActivity
         super.onCreate( savedInstanceState );
         setContentView( R.layout.mapa );
         address = (TextView) findViewById( R.id.address );
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById( R.id.map );
         mapFragment.getMapAsync( this );
@@ -97,8 +109,37 @@ public class MapActivity
     @Override
     public void onMapReady( GoogleMap googleMap )
     {
+
         this.googleMap = googleMap;
+        this.googleMap.setOnMarkerClickListener(this);
+        this.googleMap.addMarker(new MarkerOptions().position(new LatLng(4.7460666,-74.0363919)).title("Casa Vega"));
+        this.googleMap.addMarker(new MarkerOptions().position(new LatLng(4.6160164,-74.1207628)).title("Casa 1 Tatiana"));
+        this.googleMap.addMarker(new MarkerOptions().position(new LatLng(4.6669766,-74.1259004)).title("Casa 2 Tatiana"));
+
     }
+
+    public void setRoute(View v){
+
+        System.out.println("Destino"+destPosition);
+        System.out.println("Origen"+sourcePosition);
+
+        GMapV2Direction md = new GMapV2Direction();
+
+        Document doc = md.getDocument(sourcePosition, destPosition,
+                GMapV2Direction.MODE_DRIVING);
+
+        ArrayList<LatLng> directionPoint = md.getDirection(doc);
+        PolylineOptions rectLine = new PolylineOptions().width(3).color(
+                Color.RED);
+
+        for (int i = 0; i < directionPoint.size(); i++) {
+            rectLine.add(directionPoint.get(i));
+        }
+        Polyline polylin = googleMap.addPolyline(rectLine);
+
+    }
+
+
 
     @SuppressWarnings( "MissingPermission" )
     public void showMyLocation()
@@ -112,9 +153,15 @@ public class MapActivity
                 googleMap.setMyLocationEnabled( true );
 
                 Location lastLocation = LocationServices.FusedLocationApi.getLastLocation( googleApiClient );
+                destPosition = new LatLng(lastLocation.getLatitude(),lastLocation.getLongitude());
+                System.out.println("sapo");
                 if ( lastLocation != null )
                 {
-                    addMarkerAndZoom( lastLocation, "My Location", 15 );
+                    if(!ok){
+                        addMarkerAndZoom( lastLocation, "My Location", 15 );
+                        ok = true;
+                    }
+
                 }
             }
             else
@@ -237,5 +284,13 @@ public class MapActivity
             intent.putExtra( FetchAddressIntentService.LOCATION_DATA_EXTRA, lastLocation );
             startService( intent );
         }
+    }
+
+
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        sourcePosition = marker.getPosition();
+        return false;
     }
 }
