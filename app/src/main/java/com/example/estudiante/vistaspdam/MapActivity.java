@@ -123,19 +123,23 @@ public class MapActivity
         System.out.println("Destino"+destPosition);
         System.out.println("Origen"+sourcePosition);
 
-        GMapV2Direction md = new GMapV2Direction();
+        if(destPosition != null && sourcePosition != null){
+            GMapV2Direction md = new GMapV2Direction();
 
-        Document doc = md.getDocument(sourcePosition, destPosition,
-                GMapV2Direction.MODE_DRIVING);
+            Document doc = md.getDocument( destPosition,sourcePosition,
+                    GMapV2Direction.MODE_DRIVING);
 
-        ArrayList<LatLng> directionPoint = md.getDirection(doc);
-        PolylineOptions rectLine = new PolylineOptions().width(3).color(
-                Color.RED);
+            ArrayList<LatLng> directionPoint = md.getDirection(doc);
+            PolylineOptions rectLine = new PolylineOptions().width(3).color(
+                    Color.RED);
 
-        for (int i = 0; i < directionPoint.size(); i++) {
-            rectLine.add(directionPoint.get(i));
+            for (int i = 0; i < directionPoint.size(); i++) {
+                rectLine.add(directionPoint.get(i));
+            }
+            Polyline polylin = googleMap.addPolyline(rectLine);
         }
-        Polyline polylin = googleMap.addPolyline(rectLine);
+
+
 
     }
 
